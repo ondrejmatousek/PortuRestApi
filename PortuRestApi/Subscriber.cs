@@ -10,6 +10,7 @@ namespace PortuRestApi
         public string street { get; set; }
         public string zip { get; set; }
         public string country { get; set; }
+        public string email { get; set; }
 
     }
 }

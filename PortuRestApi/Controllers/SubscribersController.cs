@@ -41,7 +41,7 @@ namespace PortuRestApi.Controllers
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("key", API_KEY);
 
-                using (var content = new StringContent("{  \"subscriber_data\": {    \"name\": " + subscriber.name + ",    \"surname\": " + subscriber.surname + ", \"city\": " + subscriber.city + ",    \"street\": " + subscriber.street + ",    \"zip\": " + subscriber.zip + ",    \"country\": " + subscriber.country, System.Text.Encoding.Default, "application/json"))
+                using (var content = new StringContent("{  \"subscriber_data\": {    \"name\": " + '"' + subscriber.name + '"' + ",    \"surname\": " + '"' + subscriber.surname + '"' + ",    \"email\": " + '"' + subscriber.email + '"' + ",    \"city\": " + '"' + subscriber.city + '"' + ",    \"street\": " + '"' + subscriber.street + '"' + ",    \"zip\": " + '"' + subscriber.zip + '"' + ",    \"country\": " + '"' + subscriber.country + '"' + "}}", System.Text.Encoding.Default, "application/json"))
                 {
                     using (var response = await httpClient.PostAsync("lists/" + "1" + "/subscribe", content))
                     {
@@ -54,13 +54,13 @@ namespace PortuRestApi.Controllers
         }
 
         [HttpPut]
-        public async Task<string> Put()
+        public async Task<string> Put(Subscriber subscriber)
         {
             using (var httpClient = new HttpClient { BaseAddress = baseAddress })
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("key", API_KEY);
 
-                using (var content = new StringContent("{  \"email\": \"jan@novak.cz\",  \"subscriber_data\": {    \"name\": \"Foo\",    \"surname\": \"Bar\"  }}", System.Text.Encoding.Default, "application/json"))
+                using (var content = new StringContent("{  \"email\": " + '"' + subscriber.email + '"' + ",  \"subscriber_data\": {    \"name\": " + '"' + subscriber.name + '"' + ",    \"surname\": " + '"' + subscriber.surname + '"' + ",   \"city\": " + '"' + subscriber.city + '"' + ",    \"street\": " + '"' + subscriber.street + '"' + ",    \"zip\": " + '"' + subscriber.zip + '"' + ",    \"country\": " + '"' + subscriber.country + '"' + "}}", System.Text.Encoding.Default, "application/json"))
                 {
                     using (var response = await httpClient.PutAsync("lists/" + "1" + "/update-subscriber", content))
                     {
@@ -72,13 +72,13 @@ namespace PortuRestApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<string> Delete(string email)
+        public async Task<string> Delete(Subscriber subscriber)
         {
             using (var httpClient = new HttpClient { BaseAddress = baseAddress })
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("key", API_KEY);
 
-                using (var response = await httpClient.DeleteAsync("subscribers/" + email + "/delete"))
+                using (var response = await httpClient.DeleteAsync("subscribers/" + subscriber.email + "/delete"))
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
                     return responseData;
